@@ -15,7 +15,7 @@ class Control(commands.Cog):
         self.client = client
 
     @commands.command()
-    async def start(self, ctx, pomodoro=20, short_break=5, long_break=15, intervals=4):
+    async def start(self, ctx, pomodoro=25, short_break=5, long_break=15, intervals=4):
         if not await Settings.is_valid(ctx, pomodoro, short_break, long_break, intervals):
             return
         if session_manager.active_sessions.get(session_manager.session_id_from(ctx.channel)):
