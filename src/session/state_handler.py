@@ -1,6 +1,5 @@
 from .Session import Session
 from configs import bot_enum
-import requests
 
 
 async def transition(session: Session):
@@ -18,12 +17,7 @@ async def transition(session: Session):
         session.state = bot_enum.State.POMODORO
         await session.auto_shush.shush(session.ctx)
     session.timer.set_time_remaining()
-    response = requests.get("https://matchmaker.krunker.io/game-list?hostname=krunker.io")
-    print(response)
-    if session.state == bot_enum.State.SHORT_BREAK:
-        alert = f'Starting {session.timer.time_remaining_to_str(singular=True)} {session.state}.'
-    else:
-        alert = f'Starting {session.timer.time_remaining_to_str(singular=True)} {session.state}.'
+    alert = f'Starting {session.timer.time_remaining_to_str(singular=True)} {session.state}.'
     await session.ctx.send(alert)
     await session.dm.send_dm(alert)
 
