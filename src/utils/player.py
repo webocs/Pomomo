@@ -5,6 +5,14 @@ from discord import FFmpegPCMAudio, PCMVolumeTransformer
 from configs import bot_enum
 from ..session.Session import Session
 
+ydl_opts = {
+    'format': 'bestaudio/best',
+    'postprocessors': [{
+        'key': 'FFmpegExtractAudio',
+        'preferredcodec': 'mp3',
+        'preferredquality': '192',
+    }],
+}
 
 async def alert(session: Session):
     vc = session.ctx.voice_client
@@ -18,7 +26,7 @@ async def alert(session: Session):
         path = bot_enum.AlertPath.LONG_BREAK_START
     elif session.state != bot_enum.State.POMODORO:
         path = bot_enum.AlertPath.POMO_START
-    source = PCMVolumeTransformer(FFmpegPCMAudio(path, executable='/usr/bin/ffmpeg'),
+    source = PCMVolumeTransformer(FFmpegPCMAudio(path),
                                   volume=0.1)
     if vc.is_playing():
         vc.stop()
